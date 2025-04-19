@@ -12,7 +12,7 @@ class _JenisBilanganScreenState extends State<JenisBilanganScreen> {
   String _result = "";
 
   void _checkJenisBilangan() {
-    String input = _controller.text;
+    String input = _controller.text.trim();
     setState(() {
       _result = getJenisBilangan(input);
     });
@@ -22,20 +22,27 @@ class _JenisBilanganScreenState extends State<JenisBilanganScreen> {
     BigInt? bigInt = BigInt.tryParse(input);
     double? angka = double.tryParse(input);
 
-    if (angka == null && bigInt == null) return "Input tidak valid";
+    if (angka == null && bigInt == null) return "Input tidak valid.";
 
     List<String> jenis = [];
 
-    if (bigInt != null) {
+    if (bigInt != null && bigInt.toDouble() == angka) {
       if (bigInt >= BigInt.zero) jenis.add("Cacah");
       if (bigInt > BigInt.zero) jenis.add("Bulat Positif");
       if (bigInt < BigInt.zero) jenis.add("Bulat Negatif");
       if (bigInt > BigInt.one && isPrimaBigInt(bigInt)) jenis.add("Prima");
     } else if (angka != null) {
       jenis.add("Desimal");
+      if (angka > 0) {
+        jenis.add("Positif");
+      } else if (angka < 0) {
+        jenis.add("Negatif");
+      } else {
+        jenis.add("Nol");
+      }
     }
 
-    return jenis.isEmpty ? "Tidak diketahui" : jenis.join(", ");
+    return jenis.isEmpty ? "Tidak diketahui." : jenis.join(", ");
   }
 
   bool isPrimaBigInt(BigInt number) {
@@ -73,15 +80,17 @@ class _JenisBilanganScreenState extends State<JenisBilanganScreen> {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             TextField(
               controller: _controller,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: 'Masukkan Angka',
+                labelText: 'Masukkan angka',
                 labelStyle: TextStyle(color: primaryBlue),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: primaryBlue),
@@ -93,25 +102,29 @@ class _JenisBilanganScreenState extends State<JenisBilanganScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: _checkJenisBilangan,
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryBlue,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               child: const Text('Cek', style: TextStyle(fontSize: 16)),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 30),
             Text(
               "Hasil: $_result",
               style: TextStyle(
                 fontSize: 18,
                 color: textColor,
+                fontWeight: FontWeight.w500,
                 fontFamily: 'Raleway',
               ),
               textAlign: TextAlign.center,

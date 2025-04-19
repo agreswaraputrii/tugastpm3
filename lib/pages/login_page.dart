@@ -23,8 +23,10 @@ class _LoginPageState extends State<LoginPage> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    if (username == 'Arya' || username == 'Novan' || username == 'Ajeng' || username == 'Putri' 
-    && password == '1234') {
+    if (username == 'Arya' ||
+        username == 'Novan' ||
+        username == 'Ajeng' ||
+        username == 'Putri' && password == '1234') {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
       await prefs.setString('username', username); // Simpan nama
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
                         color: primaryBlue,
-                        fontFamily: 'Raleway', 
+                        fontFamily: 'Raleway',
                         letterSpacing: 1.2,
                       ),
                     ),
@@ -101,23 +103,23 @@ class _LoginPageState extends State<LoginPage> {
                     _loading
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
-                            onPressed: _login,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryBlue,
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(double.infinity, 48),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.5,
-                              ),
+                          onPressed: _login,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryBlue,
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(double.infinity, 48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
                   ],
                 ),
               ),

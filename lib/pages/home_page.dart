@@ -4,7 +4,7 @@ import 'stopwatch_page.dart';
 import 'konversi_waktu_page.dart';
 import 'jenis_bilangan_page.dart';
 import 'tracking_lbs_page.dart';
-
+import 'rekomendasi_situs_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -116,74 +116,82 @@ class MainPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: menuItems.map((item) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: GestureDetector(
-                  onTap: () {
-                    if (item.title == 'Stopwatch') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const StopwatchPage(),
+            children:
+                menuItems.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (item.title == 'Stopwatch') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const StopwatchPage(),
+                            ),
+                          );
+                        } else if (item.title == 'Jenis Bilangan') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const JenisBilanganScreen(),
+                            ),
+                          );
+                        } else if (item.title == 'Tracking LBS') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const TrackingLBSScreen(),
+                            ),
+                          );
+                        } else if (item.title == 'Konversi Waktu') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const KonversiWaktuScreen(),
+                            ),
+                          );
+                        } else if (item.title == 'Rekomendasi Situs') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const RekomendasiSitusPage(),
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: tileColor,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                      );
-                    } else if (item.title == 'Jenis Bilangan') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const JenisBilanganScreen()),
-                      );
-                    } else if (item.title == 'Tracking LBS') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const TrackingLBSScreen()),
-                      );
-                    } else if (item.title == 'Konversi Waktu') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const KonversiWaktuScreen()),
-                      );
-                    } else if (item.title == 'Rekomendasi Situs') {
-                      // Navigate to Rekomendasi Situs page
-                    }
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: tileColor,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                        child: Row(
+                          children: [
+                            Icon(item.icon, size: 36, color: primaryBlue),
+                            const SizedBox(width: 20),
+                            Text(
+                              item.title,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: primaryBlue,
+                                fontFamily: 'Raleway',
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          item.icon,
-                          size: 36,
-                          color: primaryBlue,
-                        ),
-                        const SizedBox(width: 20),
-                        Text(
-                          item.title,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: primaryBlue,
-                            fontFamily: 'Raleway',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
+                  );
+                }).toList(),
           ),
         ),
       ),
@@ -240,12 +248,15 @@ class MemberPage extends StatelessWidget {
                   return Card(
                     color: Colors.grey[850],
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     elevation: 4,
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage(_imagePath(member['name']!)),
+                        backgroundImage: AssetImage(
+                          _imagePath(member['name']!),
+                        ),
                         radius: 24,
                       ),
                       title: Text(
@@ -280,10 +291,50 @@ class HelpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Pusat Bantuan dan Kontak",
-        style: TextStyle(fontSize: 20, color: Colors.white),
+    final Color darkBackground = const Color(0xFF1E1E1E);
+    final Color primaryBlue = const Color(0xFF095793);
+
+    return Scaffold(
+      backgroundColor: darkBackground,
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Panduan Penggunaan Aplikasi",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: primaryBlue,
+                  fontFamily: 'Raleway',
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "1. Pengguna harus login terlebih dahulu menggunakan username dan password. Setelah berhasil login, pengguna masuk ke sesi aplikasi.\n\n"
+                "2. Halaman utama menampilkan 5 menu aplikasi secara vertikal di tengah layar:\n"
+                "  • Stopwatch: Untuk menghitung waktu.\n"
+                "  • Jenis Bilangan: Menampilkan tipe angka seperti prima, decimal, bulat positif/negatif, atau cacah.\n"
+                "  • Tracking LBS: Menampilkan lokasi berdasarkan layanan lokasi.\n"
+                "  • Konversi Waktu: Mengubah satuan waktu dari tahun ke jam, menit, dan detik.\n"
+                "  • Daftar Situs Rekomendasi: Menampilkan situs bermanfaat lengkap dengan gambar, link, dan tombol favorite.\n\n"
+                "3. Bottom Navigation Bar memiliki 3 menu:\n"
+                "  • Halaman Utama (menampilkan fitur utama seperti di atas).\n"
+                "  • Daftar Anggota (menampilkan foto, nama dan NIM anggota kelompok).\n"
+                "  • Bantuan (halaman ini), berisi panduan penggunaan aplikasi dan cara logout.\n\n"
+                "4. Untuk keluar dari aplikasi dan mengakhiri sesi login, tekan ikon logout di pojok kanan atas.",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  height: 1.6,
+                  fontFamily: 'Raleway',
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

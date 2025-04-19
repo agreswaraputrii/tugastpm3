@@ -9,14 +9,24 @@ class StopwatchPage extends StatefulWidget {
 }
 
 class _StopwatchPageState extends State<StopwatchPage> {
+  int _hours = 0;
   int _seconds = 0;
+  int _milliseconds = 0;
   Timer? _timer;
 
   void _start() {
     if (_timer != null && _timer!.isActive) return;
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       setState(() {
-        _seconds++;
+        _milliseconds++;
+        if (_milliseconds == 100) {
+          _milliseconds = 0;
+          _seconds++;
+        }
+        if (_seconds == 3600) {
+          _seconds = 0;
+          _hours++;
+        }
       });
     });
   }
@@ -28,14 +38,18 @@ class _StopwatchPageState extends State<StopwatchPage> {
   void _reset() {
     _timer?.cancel();
     setState(() {
+      _hours = 0;
       _seconds = 0;
+      _milliseconds = 0;
     });
   }
 
-  String _formatTime(int seconds) {
-    final mins = (seconds ~/ 60).toString().padLeft(2, '0');
+  String _formatTime(int hours, int seconds, int milliseconds) {
+    final hrs = hours.toString().padLeft(2, '0');
+    final mins = ((seconds ~/ 60) % 60).toString().padLeft(2, '0');
     final secs = (seconds % 60).toString().padLeft(2, '0');
-    return "$mins:$secs";
+    final ms = milliseconds.toString().padLeft(2, '0');
+    return "$hrs:$mins:$secs:$ms";
   }
 
   @override
@@ -45,7 +59,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF095793), // biru docker
+        backgroundColor: const Color(0xFF095793),
         title: const Text(
           'Stopwatch',
           style: TextStyle(
@@ -57,12 +71,11 @@ class _StopwatchPageState extends State<StopwatchPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // kembali ke halaman sebelumnya
+            Navigator.pop(context);
           },
         ),
         elevation: 0,
       ),
-
       backgroundColor: background,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
@@ -80,7 +93,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
             ),
             const SizedBox(height: 40),
             Text(
-              _formatTime(_seconds),
+              _formatTime(_hours, _seconds, _milliseconds),
               style: const TextStyle(
                 fontSize: 64,
                 color: Colors.white,
@@ -127,7 +140,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                   child: const Text('Reset'),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

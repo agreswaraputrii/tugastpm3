@@ -12,15 +12,29 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
   String hasil = '';
 
   void konversi() {
-    final tahun = int.tryParse(controller.text);
-    if (tahun == null) {
-      hasil = 'Input tidak valid';
-    } else {
-      int jam = tahun * 365 * 24;
-      int menit = jam * 60;
-      int detik = menit * 60;
-      hasil = '$jam jam / $menit menit / $detik detik';
+    final input = controller.text.trim();
+
+    // Cek jika kosong
+    if (input.isEmpty) {
+      hasil = 'Input tidak boleh kosong.';
     }
+    // Cek jika bukan angka bulat
+    else if (int.tryParse(input) == null) {
+      hasil = 'Masukkan angka bulat yang valid.';
+    }
+    // Cek jika angka negatif
+    else {
+      final tahun = int.parse(input);
+      if (tahun < 0) {
+        hasil = 'Tahun tidak boleh negatif.';
+      } else {
+        int jam = tahun * 365 * 24;
+        int menit = jam * 60;
+        int detik = menit * 60;
+        hasil = '$jam jam / $menit menit / $detik detik';
+      }
+    }
+
     setState(() {});
   }
 
@@ -77,7 +91,10 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryBlue,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
